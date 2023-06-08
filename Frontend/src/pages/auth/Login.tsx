@@ -1,7 +1,7 @@
 import axios from "axios";
 import {   useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate,useLocation } from "react-router-dom";
 import { toast } from "react-toastify";
 import { access } from "../../Redux/Feautures/authSlice";
 import { Rootstate } from "../../Redux/store/store";
@@ -12,6 +12,7 @@ export default function Login() {
 
   const navigate= useNavigate()
   const dispatch = useDispatch()
+  const Location = useLocation()
   const auth =useSelector((state:Rootstate)=>state.authreducer)
   
   
@@ -20,7 +21,7 @@ export default function Login() {
   const handleSubmit = async (e: React.SyntheticEvent) => {
     e.preventDefault();
     try {
-      const res = await axios.post("http://localhost:3000/api/auth/login", {
+      const res = await axios.post("http://localhost:8080/api/auth/login", {
         email,
         password,
       });
@@ -31,7 +32,7 @@ export default function Login() {
 
         dispatch(access({user,accessToken}))
         localStorage.setItem("auth",JSON.stringify(res.data))
-        navigate("/"); 
+        navigate(Location.state || "/"); 
       } else{
         toast.error(res.data.message);
       }
@@ -78,7 +79,7 @@ export default function Login() {
           </div>
 
           {/* forgot password */}
-          <Link to="" className="text-xs text-purple-600 hover:underline">
+          <Link to="/forgot-Password" className="text-xs text-purple-600 hover:underline">
             Forget Password?
           </Link>
 

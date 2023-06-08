@@ -7,6 +7,7 @@ import {
   AiOutlineCaretUp,
   AiOutlineClose,
   AiOutlineMenu,
+  AiOutlineSearch,
   AiTwotoneHome,
 } from "react-icons/ai";
 import { BsFillCartPlusFill } from "react-icons/bs";
@@ -22,8 +23,8 @@ const UserHeader = () => {
   const [Isopen, setIsopen] = useState(false);
 
   const auth = useSelector((state: Rootstate) => state.authreducer);
+
   const dispatch = useDispatch();
-  console.log(auth);
 
   useEffect(() => {
     const StoredAuthData = localStorage.getItem("auth");
@@ -60,19 +61,43 @@ const UserHeader = () => {
           <div
             className={
               nav
-                ? "w-2/3 bg-zinc-600 p-4 fixed left-0 top-0 h-[600px] duration-700 ease-in rounded-r-2xl "
-                : "hidden w-2/3 bg-zinc-600 px-4 py-4 h-screen fixed left-0 top-0 duration-700 ease-in rounded-r-2xl "
+                ? "w-3/4 bg-zinc-600 p-4 fixed left-0 top-0 h-screen duration-700 ease-in rounded-r-2xl "
+                : "hidden w-3/4 bg-zinc-600 px-4 py-4 h-screen fixed left-0 top-0 duration-700 ease-in rounded-r-2xl "
             }
           >
             <div className="  border-b p-6 text-zinc-400 flex justify-center text-2xl">
               <span>StyleSavant</span>
             </div>
+            {/* mobile input text */}
+            <div className="mt-3 bg-white p-1 flex flex-row items-center rounded-md font-nav">
+              <AiOutlineSearch size={25}/>
+              <input type="text" className="py-1 px-1 w-full focus:outline-none"/>
+            </div>
             <ul className="flex flex-col gap-4 mt-9">
-              <Link to="">
-                <li className="text-white border rounded-md  px-2 py-2 hover:bg-blue-700 hover:text-white/70">
-                  Dashboard{" "}
+              <div  className="">
+
+                <li className="text-white border rounded-md  px-2 py-2 hover:bg-blue-700 hover:text-white/70 flex justify-between" onClick={()=>setIsopen(!Isopen)}>
+                  {auth?.user?.name} 
+                  {!Isopen ? <AiOutlineCaretUp /> : <AiOutlineCaretDown />}
                 </li>
-              </Link>
+                {Isopen ? (
+                  <ul className="bg-gray-500 mt-2 shadow-2xl duration-300 text-start p-1 flex flex-col justify-between">
+                    <li className="mt-5 p-1">
+                      <Link
+                        to={`/dashboard/${
+                          auth?.user?.role === 1 ? 'admin' : 'user'}`}
+                        className="flex flex-row items-center gap-2 py-2 pl-3 pr-4 text-white border rounded  hover:bg-blue-700   dark:text-black dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700"
+                      >
+                        Dashboard 
+                      </Link>
+                    </li>
+                    
+                  </ul>
+                ) : (
+                  ""
+                )}
+
+              </div>
 
               <Link to="/register">
                 <li className="text-white border rounded-md  px-2 py-2 hover:bg-blue-700 hover:text-white/70">
@@ -85,7 +110,7 @@ const UserHeader = () => {
                   <HiOutlineLogin size={20} />
                 </li>
               </Link>
-              <Link to="/logout">
+              <Link to="" onClick={handleLogout}>
                 <li className="text-white border rounded-md  px-2 py-2 hover:bg-blue-700 hover:text-white/70 flex flex-row justify-between">
                   Log out
                   <HiOutlineLogout size={20} />
@@ -111,7 +136,7 @@ const UserHeader = () => {
           <ul className="flex flex-col font-medium p-4 md:p-0 mt-4 border border-gray-100 rounded-lg bg-gray-50 md:flex-row md:space-x-8 md:mt-0 md:border-0 md:bg-white dark:bg-gray-800  dark:border-gray-700">
             <li>
               <Link
-                to=""
+                to="/"
                 className="flex flex-row items-center gap-2 py-2 pl-3 pr-4  bg-blue-700 rounded md:bg-transparent md:text-blue-700 md:p-0 md:dark:text-blue-500"
               >
                 Home
@@ -120,7 +145,7 @@ const UserHeader = () => {
             </li>
             <li>
               <Link
-                to=""
+                to="/catogery"
                 className="flex flex-row items-center gap-2 py-2 pl-3 pr-4 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 dark:text-black md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700"
               >
                 Catogery
@@ -128,7 +153,7 @@ const UserHeader = () => {
             </li>
             <li>
               <Link
-                to=""
+                to="/cart"
                 className="flex flex-row items-center gap-2 py-2 pl-3 pr-4 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent   md:hover:text-blue-700 md:p-0 dark:text-black md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700"
               >
                 Cart
@@ -141,7 +166,7 @@ const UserHeader = () => {
             <li>
               <Link
                 to="/register"
-                className="flex flex-row items-center gap-2 py-2 pl-3 pr-4 text-gray-900 rounded  hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 md:ml-8 dark:text-black md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700 "
+                className="flex flex-row items-center gap-2 py-2 pl-3 pr-4 text-gray-900 rounded  hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 md:ml-8 dark:text-black md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700"
               >
                 Register
               </Link>
@@ -158,16 +183,21 @@ const UserHeader = () => {
               </li>
             ) : (
               <li>
-                <Link to="" className="flex justify-evenly items-center px-3  gap-10 relative" onClick={() => setIsopen((prev) => !prev)}>
+                <div
+                  
+                  className="flex justify-evenly items-center px-3  gap-10 cursor-pointer relative"
+                  onClick={() => setIsopen((prev) => !prev)}
+                >
                   {auth?.user?.name}
                   {!Isopen ? <AiOutlineCaretUp /> : <AiOutlineCaretDown />}
-                </Link>
+                </div>
 
                 {Isopen ? (
                   <ul className="absolute bg-white top-20 w-80 shadow-2xl duration-300 text-start p-2 flex flex-col justify-between">
                     <li className="mt-5 p-1">
                       <Link
-                        to="/dashboard"
+                        to={`/dashboard/${
+                          auth?.user?.role === 1 ? 'admin' : 'user'}`}
                         className="flex flex-row items-center gap-2 py-2 pl-3 pr-4 text-gray-900 rounded  hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0  dark:text-black md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700"
                       >
                         Dashboard
@@ -183,7 +213,6 @@ const UserHeader = () => {
                         <HiOutlineLogout size={20} />
                       </Link>
                     </li>
-                    
                   </ul>
                 ) : (
                   ""

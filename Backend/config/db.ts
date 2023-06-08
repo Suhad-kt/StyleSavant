@@ -7,7 +7,7 @@ const ConnectDb = async ()=>{
 
     } catch (error) {
         console.log("Database not connected :",error);
-        
+        process.exit()
     }
 }
 export default ConnectDb

@@ -1,30 +1,41 @@
-import  express from "express";
-import { CurrentUser, forgotPasswordController, loginController, registerController } from "../Controllers/Usercontroller";
+import express from "express";
+import {
+  Test,
+  forgotPasswordController,
+  loginController,
+  registerController,
+} from "../Controllers/Usercontroller";
 import { ValidateToken, isadmin } from "../middlewares/authMiddleware";
 
 //Router Object
-const router =express.Router()
+const router = express.Router();
 
 //routing
 //REGISTER  || METHOD POST
 
-router.post('/register',registerController)
+router.post("/register", registerController);
 
 //Login  || METHOD POST
-router.post('/login',loginController)
+router.post("/login", loginController);
 
 //forgot password  || POST
-router.post('/forgot-password',forgotPasswordController)
+router.post("/forgot-password", forgotPasswordController);
 
 //test
-router.get('/current',ValidateToken,isadmin,CurrentUser)
+// router.get("/test", ValidateToken, isadmin, Test);
 
-//protected route auth
-router.get('/userauth',ValidateToken,(req,res)=>{
-    res.status(200).send({ok:true})
-})
+//protected User route auth
+router.get("/user-auth", ValidateToken, (req, res) => {
+  res.status(200).send({ ok: true });
+});
+
+//protected Admin route auth
+router.get("/admin-auth", ValidateToken,isadmin, (req, res) => {
+  res.status(200).send({ ok: true });
+});
+
 
 //forgot password || post
-router.post('/forgot-password',forgotPasswordController)
+router.post("/forgot-password", forgotPasswordController);
 
-export default router
+export default router;

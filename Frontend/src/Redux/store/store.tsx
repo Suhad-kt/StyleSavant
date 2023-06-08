@@ -2,7 +2,8 @@ import { configureStore } from "@reduxjs/toolkit";
 import authreducer from "../Feautures/authSlice";
 export const store = configureStore({
     reducer:{
-        authreducer
+        authreducer,
+        
     }
 })
 
