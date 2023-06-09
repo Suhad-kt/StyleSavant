@@ -1,6 +1,6 @@
 import express from 'express'
 import { ValidateToken, isadmin } from '../middlewares/authMiddleware'
-import { DeleteProductController, UpdateProductController, createProductController, getProductController, getSingleProductController } from '../Controllers/PoductController'
+import { DeleteProductController, UpdateProductController, createProductController, getProductController, getProductPhoto, getSingleProductController } from '../Controllers/PoductController'
 import upload from '../middlewares/multer'
 
 const router = express.Router()
@@ -17,9 +17,11 @@ router.delete('/delete-product/:productid',ValidateToken,isadmin,DeleteProductCo
 //get-allproducts    Metode:GET
 router.get('/all-products',getProductController)
 
+//get photo
+router.get('/product-photo/:productid',getProductPhoto)
 
 // get single product    Metode:GET
-router.get('/get-product/:slug',getSingleProductController)
+router.get('/product/:slug',getSingleProductController)
 
 
 export default router

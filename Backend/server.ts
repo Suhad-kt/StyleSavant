@@ -29,7 +29,7 @@ app.use("/api/auth",authRoutes)
 //category
 app.use("/api/category",categoryRoute)
 //product"
-app.use("/api/product",ProductRoute)
+app.use("/api/products",ProductRoute)
 
 
 //app listening

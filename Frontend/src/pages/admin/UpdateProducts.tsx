@@ -6,14 +6,14 @@ import { toast } from "react-toastify";
 import axios from "axios";
 import { useSelector } from "react-redux";
 import { Rootstate } from "../../Redux/store/store";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
 interface Category {
   _id: string;
   name: string;
 }
 
-const CreateProduct = () => {
+const UpdateProduct = () => {
   const [categories, setCategories] = useState<Category[]>([]);
 
   const [name, setName] = useState("");
@@ -25,7 +25,27 @@ const CreateProduct = () => {
   const [shipping, setShipping] = useState("");
 
   const auth = useSelector((state: Rootstate) => state.authreducer);
-  const navigate = useNavigate()
+  const navigate = useNavigate();
+  const params = useParams();
+
+  //get single products
+  const getSingleProduct = async () => {
+    try {
+      const { data } = await axios.get(
+        `http://localhost:8080/api/products/product/${params.slug}`
+      );
+
+      setName(data.product.name);
+      setDescription(data.product.description);
+      setPrice(data.product.price);
+      setQuantity(data.product.quantity);
+      setShipping(data.product.shipping);
+      setCategory(data.product.category.name);
+    } catch (error) {
+      toast.error("something went wrong in getting single product");
+    }
+  };
+
   //get all category
   const getAllCategory = async () => {
     try {
@@ -42,6 +62,8 @@ const CreateProduct = () => {
 
   useEffect(() => {
     getAllCategory();
+    getSingleProduct();
+    //eslint-disable-next-line
   }, []);
 
   const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -75,18 +97,17 @@ const CreateProduct = () => {
       );
 
       if (data?.success) {
-        toast.success(`${name} created successfully`)
-        setName("")
-        setFile(null)
-        setDescription("")
-        setCategory("")
-        setPrice("")
-        setQuantity("")
-        setShipping("")
-        navigate('/dashboard/admin/products')
-      }
-      else{
-        toast.error(data?.message)
+        toast.success(`${name} created successfully`);
+        setName("");
+        setFile(null);
+        setDescription("");
+        setCategory("");
+        setPrice("");
+        setQuantity("");
+        setShipping("");
+        navigate("/dashboard/admin/products");
+      } else {
+        toast.error(data?.message);
       }
     } catch (error) {
       toast.error("something went wrong in submit");
@@ -111,6 +132,7 @@ const CreateProduct = () => {
               onChange={(value) => {
                 setCategory(value);
               }}
+              value={category}
             >
               {categories?.map((Citems) => (
                 <Option key={Citems._id} value={Citems._id}>
@@ -131,9 +153,21 @@ const CreateProduct = () => {
               </label>
             </div>
             <div className="mt-4">
-              {file && (
+              {file ? (
                 <div>
-                  <img src={URL.createObjectURL(file)} alt="product-photo" />
+                  <img
+                    src={URL.createObjectURL(file)}
+                    alt="product-photo"
+                    height={"200px"}
+                  />
+                </div>
+              ) : (
+                <div>
+                  <img
+                    src={`http://localhost:8080/api/products/product-photo/${id}`}           -------------------------------------------error
+                    alt="product-photo"
+                    height={"200px"}
+                  />
                 </div>
               )}
             </div>
@@ -187,14 +221,18 @@ const CreateProduct = () => {
                 placeholder="Select shipping"
                 size="large"
                 onChange={(value) => setShipping(value)}
+                value={shipping ? "Yes" : "No"}
               >
                 <Option value="1">Yes</Option>
                 <Option value="0">NO</Option>
               </Select>
             </div>
             <div className="m-3 text-center">
-              <button type="submit" className="bg-blue-700 text-white hover:bg-blue-800 font-medium text-sm px-5 py-2.5 rounded-full focus:outline-none focus:ring-2 focus:ring-blue-300">
-                Create Product
+              <button
+                type="submit"
+                className="bg-blue-700 text-white hover:bg-blue-800 font-medium text-sm px-5 py-2.5 rounded-full focus:outline-none focus:ring-2 focus:ring-blue-300"
+              >
+                Update Product
               </button>
             </div>
           </form>
@@ -204,4 +242,4 @@ const CreateProduct = () => {
   );
 };
 
-export default CreateProduct;
+export default UpdateProduct;

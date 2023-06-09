@@ -5,12 +5,13 @@ import { cloud } from "../config/cloudinary";
 
 //creating product
 export const createProductController = async (req: Request, res: Response) => {
-  const {file , body} = req
-  if (!file) throw new Error("not file found");
+  const { file } = req;
+  if (!file) {
+    throw new Error("not file found");
+  }
   try {
-    const { name, slug, description, price, category, quantity, shipping } =
-      body;
-    const imageCloud = await cloud.uploader.upload(req.file?.path as string);
+    const { name, description, price, category, quantity, shipping } = req.body;
+    const imageCloud = await cloud.uploader.upload(file?.path as string);
 
     // validation
     switch (true) {
@@ -37,7 +38,7 @@ export const createProductController = async (req: Request, res: Response) => {
           .send({ success: false, message: "quantity is required" });
     }
 
-    const product = new ProductModel({
+    const products = new ProductModel({
       name,
       slug: slugify(name),
       description,
@@ -48,12 +49,12 @@ export const createProductController = async (req: Request, res: Response) => {
       photo: imageCloud.secure_url,
     });
 
-    await product.save();
+    await products.save();
 
     res.status(200).send({
       success: true,
       message: "product created successfull",
-      product,
+      products,
     });
   } catch (error) {
     res
@@ -102,16 +103,17 @@ export const UpdateProductController = async (req: Request, res: Response) => {
   }
 };
 
-
 //Delete product
-export const DeleteProductController = async (req:Request,res:Response) =>{
-  const productid = req.params.productid
+export const DeleteProductController = async (req: Request, res: Response) => {
+  const productid = req.params.productid;
 
-  const deletedProduct = await ProductModel.findByIdAndDelete(productid)
+  const deletedProduct = await ProductModel.findByIdAndDelete(productid);
 
-  if(!deletedProduct) throw new Error("cannot delete product")
-  return res.status(200).send({ success: true, message: "product deleted", deletedProduct })
-}
+  if (!deletedProduct) throw new Error("cannot delete product");
+  return res
+    .status(200)
+    .send({ success: true, message: "product deleted", deletedProduct });
+};
 
 // All Products getting
 export const getProductController = async (req: Request, res: Response) => {
@@ -139,6 +141,26 @@ export const getProductController = async (req: Request, res: Response) => {
   }
 };
 
+//get photo
+export const getProductPhoto = async (req: Request, res: Response) => {
+  try {
+    const productPhoto =await ProductModel.findById(req.params.productid).select("photo")
+    if(productPhoto?.photo){
+      res.status(200).send({
+        success: true,
+        message: "get product photo successfully",
+        productPhoto
+      });
+    }
+  } catch (error) {
+    res.status(500).send({
+      success: false,
+      message: "error while in getting photo",
+      error,
+    });
+  }
+};
+
 // single Product getting
 export const getSingleProductController = async (
   req: Request,
@@ -161,4 +183,3 @@ export const getSingleProductController = async (
   }
 };
 
-// single Product getting
