@@ -70,15 +70,16 @@ const UpdateProduct = () => {
   }, []);
 
   const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files && e.target.files.length > 0) {
+    if (e.target.files && e.target.files.length > 0) {file
       const selectedfile = e.target.files[0];
       setFile(selectedfile);
     }
   };
 
   //handleClick function  && update product
-  const handleUpdateProduct = async () => {
+  const handleUpdateProduct = async () => {                     //error in update
     try {
+
       const ProductData = new FormData();
       console.log(ProductData);
 
