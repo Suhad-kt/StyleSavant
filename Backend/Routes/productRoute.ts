@@ -9,7 +9,7 @@ const router = express.Router()
 router.post('/create-product',ValidateToken,isadmin, upload.single('file'),createProductController)
 
 //update Product  Method:PUT
- router.put('/update-product/:productid',upload.single('file'),ValidateToken,isadmin,UpdateProductController)
+ router.put('/update-product/:productid',ValidateToken,isadmin,upload.single('file'),UpdateProductController)
 
 //Delete Product  Method:Delete
 router.delete('/delete-product/:productid',ValidateToken,isadmin,DeleteProductController)

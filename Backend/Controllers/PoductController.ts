@@ -66,10 +66,12 @@ export const createProductController = async (req: Request, res: Response) => {
 // Update Product
 export const UpdateProductController = async (req: Request, res: Response) => {
   try {
+    const file = req.file
+    
     const { name, slug, description, price, category, quantity, shipping } =
       req.body;
 
-    const imageCloud = await cloud.uploader.upload(req.file?.path as string);
+    const imageCloud = await cloud.uploader.upload(file?.path as string);
 
     const updatedProduct = await ProductModel.findByIdAndUpdate(
       req.params.productid,
@@ -145,6 +147,7 @@ export const getProductController = async (req: Request, res: Response) => {
 export const getProductPhoto = async (req: Request, res: Response) => {
   try {
     const productPhoto =await ProductModel.findById(req.params.productid).select("photo")
+    
     if(productPhoto?.photo){
       res.status(200).send({
         success: true,

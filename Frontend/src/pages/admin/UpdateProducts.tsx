@@ -1,12 +1,12 @@
-import React, { ChangeEvent, useEffect, useState } from "react";
+import { ChangeEvent, useEffect, useState } from "react";
 import AdminMenu from "../../components/AdminMenu/AdminMenu";
 import { Select } from "antd";
-import { Option } from "antd/es/mentions";
 import { toast } from "react-toastify";
 import axios from "axios";
 import { useSelector } from "react-redux";
 import { Rootstate } from "../../Redux/store/store";
 import { useNavigate, useParams } from "react-router-dom";
+const { Option } = Select;
 
 interface Category {
   _id: string;
@@ -23,6 +23,7 @@ const UpdateProduct = () => {
   const [category, setCategory] = useState("");
   const [file, setFile] = useState<File | null>(null);
   const [shipping, setShipping] = useState("");
+  const [id, setId] = useState("");
 
   const auth = useSelector((state: Rootstate) => state.authreducer);
   const navigate = useNavigate();
@@ -40,7 +41,9 @@ const UpdateProduct = () => {
       setPrice(data.product.price);
       setQuantity(data.product.quantity);
       setShipping(data.product.shipping);
-      setCategory(data.product.category.name);
+      setCategory(data.product.category._id);
+      setId(data.product._id);
+      setFile(data.product.photo);
     } catch (error) {
       toast.error("something went wrong in getting single product");
     }
@@ -68,27 +71,28 @@ const UpdateProduct = () => {
 
   const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files.length > 0) {
-      setFile(e.target.files[0]);
+      const selectedfile = e.target.files[0];
+      setFile(selectedfile);
     }
   };
 
-  //handleClick function  && post form
-  const handleCreateProduct = async (e: React.SyntheticEvent) => {
-    e.preventDefault();
+  //handleClick function  && update product
+  const handleUpdateProduct = async () => {
     try {
-      const formdata = new FormData();
+      const ProductData = new FormData();
+      console.log(ProductData);
 
-      formdata.append("name", name);
-      formdata.append("description", description);
-      formdata.append("price", price);
-      formdata.append("quantity", quantity);
-      formdata.append("category", category);
-      formdata.append("file", file as File);
-      formdata.append("shipping", shipping);
+      ProductData.append("name", name);
+      ProductData.append("description", description);
+      ProductData.append("price", price);
+      ProductData.append("quantity", quantity);
+      ProductData.append("category", category);
+      file && ProductData.append("file", file as File);
+      ProductData.append("shipping", shipping);
 
-      const { data } = await axios.post(
-        "http://localhost:8080/api/products/create-product",
-        formdata,
+      const { data } = await axios.put(
+        `http://localhost:8080/api/products/update-product/${id}`,
+        ProductData,
         {
           headers: {
             Authorization: auth?.accessToken,
@@ -97,20 +101,33 @@ const UpdateProduct = () => {
       );
 
       if (data?.success) {
-        toast.success(`${name} created successfully`);
-        setName("");
-        setFile(null);
-        setDescription("");
-        setCategory("");
-        setPrice("");
-        setQuantity("");
-        setShipping("");
+        toast.success(`${name} Updated successfully`);
         navigate("/dashboard/admin/products");
       } else {
         toast.error(data?.message);
       }
     } catch (error) {
-      toast.error("something went wrong in submit");
+      toast.error("something went wrong in update product");
+    }
+  };
+
+  //Delete product
+  const handleDelete = async () => {
+    try {
+      if (confirm("Are you sure you want to delete this product?")) {
+         await axios.delete(
+          `http://localhost:8080/api/products/delete-product/${id}`,
+          {
+            headers: {
+              Authorization: auth?.accessToken,
+            },
+          }
+        );
+        toast.success(`${name} is Deleted`)  
+         navigate("/dashboard/admin/products");
+      }
+    } catch (error) {
+      toast.error("something went wrong in deleting");
     }
   };
 
@@ -121,8 +138,10 @@ const UpdateProduct = () => {
           <AdminMenu />
         </div>
         <div className="text-base border px-5 py-2">
-          <h3 className="p-2 ">CreateProduct</h3>
-          <form className="m-1" onSubmit={handleCreateProduct}>
+          <h3 className="p-2 text-lg font-extrabold text-center ">
+            Update Product
+          </h3>
+          <div className="m-1">
             <Select
               bordered={false}
               showSearch
@@ -142,7 +161,7 @@ const UpdateProduct = () => {
             </Select>
             <div>
               <label className="border text-sm text-black hover:bg-blue-700 hover:text-white p-2 rounded-md">
-                {file ? file.name : "Upload photo"}
+                {"Upload photo"}
                 <input
                   type="file"
                   name="photo"
@@ -152,23 +171,22 @@ const UpdateProduct = () => {
                 />
               </label>
             </div>
-            <div className="mt-4">
+            <div className="m-4 ">
               {file ? (
                 <div>
                   <img
-                    src={URL.createObjectURL(file)}
+                    src={
+                      typeof file === "string"
+                        ? file
+                        : URL.createObjectURL(file)
+                    }
                     alt="product-photo"
                     height={"200px"}
+                    className="rounded-lg"
                   />
                 </div>
               ) : (
-                <div>
-                  <img
-                    src={`http://localhost:8080/api/products/product-photo/${id}`}           -------------------------------------------error
-                    alt="product-photo"
-                    height={"200px"}
-                  />
-                </div>
+                ""
               )}
             </div>
             {/* input form */}
@@ -230,12 +248,20 @@ const UpdateProduct = () => {
             <div className="m-3 text-center">
               <button
                 type="submit"
+                className="bg-red-700 text-white hover:bg-red-800 font-medium text-sm px-5 py-2.5 rounded-full focus:outline-none focus:ring-2 focus:ring-blue-300"
+                onClick={handleDelete}
+              >
+                Delete Product
+              </button>
+              <button
+                type="submit"
+                onClick={handleUpdateProduct}
                 className="bg-blue-700 text-white hover:bg-blue-800 font-medium text-sm px-5 py-2.5 rounded-full focus:outline-none focus:ring-2 focus:ring-blue-300"
               >
                 Update Product
               </button>
             </div>
-          </form>
+          </div>
         </div>
       </div>
     </div>

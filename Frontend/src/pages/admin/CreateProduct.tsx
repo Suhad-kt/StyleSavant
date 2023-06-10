@@ -1,7 +1,7 @@
 import React, { ChangeEvent, useEffect, useState } from "react";
 import AdminMenu from "../../components/AdminMenu/AdminMenu";
 import { Select } from "antd";
-import { Option } from "antd/es/mentions";
+const {Option} = Select
 import { toast } from "react-toastify";
 import axios from "axios";
 import { useSelector } from "react-redux";

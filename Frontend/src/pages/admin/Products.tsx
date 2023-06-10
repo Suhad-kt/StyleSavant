@@ -6,6 +6,7 @@ import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 
 interface Product {
+  _id:number
   name: string;
   slug: string;
   photo: string;
@@ -51,8 +52,9 @@ const Products = () => {
           <div className="grid grid-cols-1 gap-10 md:grid-cols-3 cursor-pointer">
             {AllProducts?.map((product) => (
               <Link
+              key={product._id}
                 to={`/dashboard/admin/product/${product.slug}`}
-                className="bg-white rounded-lg shadow-lg overflow-hidden"
+                className="bg-white max-w-md rounded-lg shadow-lg overflow-hidden"
               >
                 <img
                   className="h-48 w-full object-cover"
