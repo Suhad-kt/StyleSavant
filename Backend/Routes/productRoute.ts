@@ -1,6 +1,6 @@
 import express from 'express'
 import { ValidateToken, isadmin } from '../middlewares/authMiddleware'
-import { DeleteProductController, UpdateProductController, createProductController, getProductController, getProductPhoto, getSingleProductController } from '../Controllers/PoductController'
+import { DeleteProductController, PoductCountController, PoductListController, SearchProductController, UpdateProductController, createProductController, getProductController, getProductPhoto, getSingleProductController, productFilterController } from '../Controllers/PoductController'
 import upload from '../middlewares/multer'
 
 const router = express.Router()
@@ -22,6 +22,18 @@ router.get('/product-photo/:productid',getProductPhoto)
 
 // get single product    Metode:GET
 router.get('/product/:slug',getSingleProductController)
+
+//filters by category and price
+router.post('/product-filters',productFilterController)
+
+//products count
+router.get('/product-count',PoductCountController)
+
+//product per page
+router.get('/product-list/:page',PoductListController)
+
+//Search Products
+router.get('/search-products/:keyword',SearchProductController)
 
 
 export default router

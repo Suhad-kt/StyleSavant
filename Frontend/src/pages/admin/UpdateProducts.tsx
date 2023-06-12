@@ -49,6 +49,11 @@ const UpdateProduct = () => {
     }
   };
 
+  useEffect(() => {
+    getSingleProduct();
+    //eslint-disable-next-line
+  }, []);
+
   //get all category
   const getAllCategory = async () => {
     try {
@@ -65,7 +70,6 @@ const UpdateProduct = () => {
 
   useEffect(() => {
     getAllCategory();
-    getSingleProduct();
     //eslint-disable-next-line
   }, []);
 
@@ -133,7 +137,7 @@ const UpdateProduct = () => {
   };
 
   return (
-    <div className="max-w-7xl m-auto p-5   ">
+    <div className="max-w-7xl m-auto p-5 mt-36">
       <div className="flex flex-col gap-16 md:flex-row md:gap-36">
         <div className="md:w-1/4">
           <AdminMenu />
@@ -183,7 +187,7 @@ const UpdateProduct = () => {
                     }
                     alt="product-photo"
                     height={"200px"}
-                    className="rounded-lg"
+                    className="rounded-lg "
                   />
                 </div>
               ) : (

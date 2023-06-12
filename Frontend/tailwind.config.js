@@ -6,6 +6,8 @@ export default {
   ],
   theme: {
     fontFamily:{
+      'poppins':['Poppins, sans-serif'],
+      'nunito':['Nunito, sans-serif'],
       'nav': ['Josefin Sans, sans-serif'],
       'bar': ['Poppins, sans-serif'],
      'hjv': ['Wix Madefor Text, sans-serif']

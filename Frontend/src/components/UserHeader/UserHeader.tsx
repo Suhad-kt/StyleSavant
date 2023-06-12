@@ -17,6 +17,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Rootstate } from "../../Redux/store/store";
 import { access } from "../../Redux/Feautures/authSlice";
 import { toast } from "react-toastify";
+import ProductSearch from "../UserSearch/productSearch";
 
 const UserHeader = () => {
   const [nav, setnav] = useState(false);
@@ -47,7 +48,7 @@ const UserHeader = () => {
   };
 
   return (
-    <nav className="bg-white border-gray-200 drop-shadow-xl">
+    <nav className="bg-white border-gray-200 drop-shadow-xl fixed top-0 left-0 right-0 z-10">
       <div className="max-w-screen-2xl flex flex-wrap items-center justify-between mx-auto p-4">
         <Link to="/" className="flex items-center">
           <img
@@ -56,7 +57,7 @@ const UserHeader = () => {
             alt="StyleSavant logo"
           />
         </Link>
-        <div className="md:hidden">
+        <div className="md:hidden ">
           {/* Dropdown Menu */}
           <div
             className={
@@ -70,14 +71,19 @@ const UserHeader = () => {
             </div>
             {/* mobile input text */}
             <div className="mt-3 bg-white p-1 flex flex-row items-center rounded-md font-nav">
-              <AiOutlineSearch size={25}/>
-              <input type="text" className="py-1 px-1 w-full focus:outline-none"/>
+              <AiOutlineSearch size={25} />
+              <input
+                type="text"
+                className="py-1 px-1 w-full focus:outline-none"
+              />
             </div>
             <ul className="flex flex-col gap-4 mt-9">
-              <div  className="">
-
-                <li className="text-white border rounded-md  px-2 py-2 hover:bg-blue-700 hover:text-white/70 flex justify-between" onClick={()=>setIsopen(!Isopen)}>
-                  {auth?.user?.name} 
+              <div className="">
+                <li
+                  className="text-white border rounded-md  px-2 py-2 hover:bg-blue-700 hover:text-white/70 flex justify-between"
+                  onClick={() => setIsopen(!Isopen)}
+                >
+                  {auth?.user?.name}
                   {!Isopen ? <AiOutlineCaretUp /> : <AiOutlineCaretDown />}
                 </li>
                 {Isopen ? (
@@ -85,18 +91,17 @@ const UserHeader = () => {
                     <li className="mt-5 p-1">
                       <Link
                         to={`/dashboard/${
-                          auth?.user?.role === 1 ? 'admin' : 'user'}`}
+                          auth?.user?.role === 1 ? "admin" : "user"
+                        }`}
                         className="flex flex-row items-center gap-2 py-2 pl-3 pr-4 text-white border rounded  hover:bg-blue-700   dark:text-black dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700"
                       >
-                        Dashboard 
+                        Dashboard
                       </Link>
                     </li>
-                    
                   </ul>
                 ) : (
                   ""
                 )}
-
               </div>
 
               <Link to="/register">
@@ -132,25 +137,30 @@ const UserHeader = () => {
           </button>
         </div>
 
+        {/* //desktop */}
+
+        {/* //serchbar */}
+        <ProductSearch/>
+
         <div className="items-center justify-between hidden w-full md:flex md:w-auto md:order-1 ">
           <ul className="flex flex-col font-medium p-4 md:p-0 mt-4 border border-gray-100 rounded-lg bg-gray-50 md:flex-row md:space-x-8 md:mt-0 md:border-0 md:bg-white dark:bg-gray-800  dark:border-gray-700">
             <li>
               <Link
                 to="/"
-                className="flex flex-row items-center gap-2 py-2 pl-3 pr-4  bg-blue-700 rounded md:bg-transparent md:text-blue-700 md:p-0 md:dark:text-blue-500"
+                className="flex flex-row items-center focus:underline gap-2 py-2 pl-3 pr-4 focus:text-blue-500 rounded md:bg-transparent md:p-0 "
               >
                 Home
                 <AiTwotoneHome size={20} />
               </Link>
             </li>
-            <li>
+            {/* <li>
               <Link
                 to="/catogery"
                 className="flex flex-row items-center gap-2 py-2 pl-3 pr-4 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 dark:text-black md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700"
               >
                 Catogery
               </Link>
-            </li>
+            </li> */}
             <li>
               <Link
                 to="/cart"
@@ -158,9 +168,9 @@ const UserHeader = () => {
               >
                 Cart
                 <BsFillCartPlusFill size={20} />
-                <sup className="text-xl -ml-2 animate-bounce duration-100 ease-in-out text-blue-600">
+                {/* <sup className="text-xl -ml-2 animate-bounce duration-100 ease-in-out text-blue-600">
                   0
-                </sup>
+                </sup> */}
               </Link>
             </li>
             <li>
@@ -184,7 +194,6 @@ const UserHeader = () => {
             ) : (
               <li>
                 <div
-                  
                   className="flex justify-evenly items-center px-3  gap-10 cursor-pointer relative"
                   onClick={() => setIsopen((prev) => !prev)}
                 >
@@ -197,7 +206,8 @@ const UserHeader = () => {
                     <li className="mt-5 p-1">
                       <Link
                         to={`/dashboard/${
-                          auth?.user?.role === 1 ? 'admin' : 'user'}`}
+                          auth?.user?.role === 1 ? "admin" : "user"
+                        }`}
                         className="flex flex-row items-center gap-2 py-2 pl-3 pr-4 text-gray-900 rounded  hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0  dark:text-black md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700"
                       >
                         Dashboard

@@ -94,7 +94,7 @@ const CreateProduct = () => {
   };
 
   return (
-    <div className="max-w-7xl m-auto p-5   ">
+    <div className="max-w-7xl m-auto p-5 mt-36">
       <div className="flex flex-col gap-16 md:flex-row md:gap-36">
         <div className="md:w-1/4">
           <AdminMenu />

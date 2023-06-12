@@ -3,7 +3,7 @@ import AdminMenu from "../../components/AdminMenu/AdminMenu";
 
 const Users = () => {
   return (
-    <div className="max-w-7xl m-auto p-5   ">
+    <div className="max-w-7xl m-auto p-5  mt-36 ">
       <div className="flex flex-row gap-36">
         <div className="">
           <AdminMenu />

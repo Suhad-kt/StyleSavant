@@ -42,7 +42,7 @@ const Products = () => {
   }, []);
 
   return (
-    <div className="max-w-7xl mx-auto p-6">
+    <div className="max-w-7xl mx-auto p-6 mt-36">
       <div className="flex flex-col md:flex-row md:gap-36">
         <div className="md:w-1/4">
           <AdminMenu />

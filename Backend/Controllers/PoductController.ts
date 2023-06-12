@@ -186,3 +186,63 @@ export const getSingleProductController = async (
   }
 };
 
+
+//filters 
+export const productFilterController =async (req:Request,res:Response)=>{
+  try {
+    const {checked,radio}=req.body
+    let args:any={}
+    if(checked.length>0) args.category=checked
+    if(radio.length) args.price = {$gte:radio[0] , $lte:radio[1]}
+
+    const products = await ProductModel.find(args)
+    res.status(200).send({
+      success:true,
+     products
+    })
+  } catch (error) {
+    res.status(500).send(error)
+  }
+}
+
+
+//product count 
+export const PoductCountController = async (req:Request,res:Response)=>{
+  try {
+    const productCount = await ProductModel.find({}).estimatedDocumentCount()
+    res.status(200).send({success:true,productCount})
+  } catch (error) {
+    res.status(500).send({success:false,message:'error in getting product count',error})
+  }
+}
+
+
+//product perPage
+export const PoductListController = async (req:Request,res:Response)=>{
+  try {
+    const perPage:number = 6
+    const page:number = req.params.page ? parseInt(req.params.page) :1
+    const products = await ProductModel.find({}).skip((page - 1) * perPage).limit(perPage).sort({createdAt:-1})
+    res.status(200).send({success:true,products})
+  } catch (error) {
+    res.status(500).send({success:false,message:'error in getting product count',error})
+  }
+}
+
+
+//search product
+export const SearchProductController = async (req:Request,res:Response) =>{
+  try {
+    const {keyword}  = req.params
+    const result = await ProductModel.find({
+      $or:[
+        {name:{$regex:keyword,$options:'i'}},
+        {description:{$regex:keyword,$options:'i'}}
+      ]
+    })
+    res.status(200).send(result)
+    
+  } catch (error) {
+    res.status(500).send({success:false,message:'error in search product Api',error})
+  }
+}
