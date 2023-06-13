@@ -3,9 +3,11 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import { MdFavorite } from "react-icons/md";
 import { Prices } from "../../components/PricesFilter/PricesFiler";
+import { useNavigate } from "react-router-dom";
 interface Product {
   _id: string;
   name: string;
+  slug:string;
   photo: string;
   description: string;
   price: number;
@@ -17,6 +19,8 @@ interface Category {
   slug: string;
 }
 const Homepage = () => {
+  const navigate =useNavigate()    //navigate
+
   const [categories, setCategories] = useState<Category[]>([]);
   const [Products, setProducts] = useState<Product[]>([]);
   const [checked, setChecked] = useState<string[]>([]);
@@ -199,7 +203,7 @@ const Homepage = () => {
                   </div>
                 </div>
                 <div className="flex justify-center gap-2 pb-4">
-                  <button className="bg-teal-500 hover:bg-teal-600 text-white px-3 py-2 uppercase font-poppins font-medium rounded">
+                  <button className="bg-teal-500 hover:bg-teal-600 text-white px-3 py-2 uppercase font-poppins font-medium rounded" onClick={()=>navigate(`/products-details/${product.slug}`)}>
                     <svg viewBox="0 0 24 24" className="inline w-4 h-4 mr-1">
                       <path
                         fill="currentColor"

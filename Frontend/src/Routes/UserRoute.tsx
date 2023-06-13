@@ -15,14 +15,16 @@ import Orders from "../pages/user/Order.tsx";
 import UserDashboard from "../pages/user/UserDashboard.tsx";
 import Products from "../pages/admin/Products.tsx";
 import UpdateProduct from "../pages/admin/UpdateProducts.tsx";
-import Homepage from "../pages/user/Homepage.tsx";
+import Homepage from "../pages/HomePage/Homepage.tsx";
 import SearchPage from "../pages/SearchPage/SearchPage.tsx";
+import ProductDeatailes from "../pages/ProductDetails/ProductDeatailes.tsx";
 
 const UserRoute = () => {
   return (
     <Routes>
       <Route path="/" element={<Homepage/>} />
       <Route path="/search" element={<SearchPage/>} />
+      <Route path="/products-details/:slug" element={<ProductDeatailes/>} />
       <Route path="/dashboard" element={<PrivateUserRoute />}>
         <Route path="user" element={<UserDashboard/>} />
         <Route path="user/profile" element={<Profile />} />

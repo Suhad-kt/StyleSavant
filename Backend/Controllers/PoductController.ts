@@ -144,25 +144,26 @@ export const getProductController = async (req: Request, res: Response) => {
 };
 
 //get photo
-export const getProductPhoto = async (req: Request, res: Response) => {
-  try {
-    const productPhoto =await ProductModel.findById(req.params.productid).select("photo")
-    
-    if(productPhoto?.photo){
-      res.status(200).send({
-        success: true,
-        message: "get product photo successfully",
-        productPhoto
-      });
-    }
-  } catch (error) {
-    res.status(500).send({
-      success: false,
-      message: "error while in getting photo",
-      error,
-    });
-  }
-};
+// export const getProductPhoto = async (req: Request, res: Response) => {
+//   try {
+//     const productPhoto =await ProductModel.findById(req.params.productid).select("photo")
+//     if(productPhoto?.photo){
+//       res.status(200).send({
+//         success: true,
+//         message: "get product photo successfully",
+//         productPhoto
+//       });
+//       console.log(productPhoto);
+      
+//     }
+//   } catch (error) {
+//     res.status(500).send({
+//       success: false,
+//       message: "error while in getting photo",
+//       error,
+//     });
+//   }
+// };
 
 // single Product getting
 export const getSingleProductController = async (
@@ -244,5 +245,19 @@ export const SearchProductController = async (req:Request,res:Response) =>{
     
   } catch (error) {
     res.status(500).send({success:false,message:'error in search product Api',error})
+  }
+}
+
+
+export const similarProductsController = async (req:Request,res:Response) =>{
+  try {
+    const {pid,cid} = req.params
+    const products = await ProductModel.find({
+      category:cid,
+      _id:{$ne:pid}
+    }).limit(3)
+    res.status(200).send({success:true,products})
+  } catch (error) {
+    res.status(500).send({success:false,message:'something went wrong in getting similar products',error})
   }
 }
