@@ -21,7 +21,7 @@ function App() {
 
   return (
     <BrowserRouter>
-    <UserHeader/>
+    {/* <UserHeader/> */}
         <UserRoute />
         {/* <AdminRouter /> */}
         <ToastContainer />

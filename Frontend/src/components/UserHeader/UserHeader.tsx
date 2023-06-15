@@ -18,13 +18,18 @@ import { Rootstate } from "../../Redux/store/store";
 import { access } from "../../Redux/Feautures/authSlice";
 import { toast } from "react-toastify";
 import ProductSearch from "../UserSearch/productSearch";
+import Usecategory from "../../hooks/Usecategory";
+
 
 const UserHeader = () => {
   const [nav, setnav] = useState(false);
   const [Isopen, setIsopen] = useState(false);
+  const [IsCategoryopen, setCategoryIsopen] = useState(false);
 
   const auth = useSelector((state: Rootstate) => state.authreducer);
+  const {CartItems} = useSelector((state: Rootstate) => state.Cart);
 
+  const categories = Usecategory();
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -140,7 +145,7 @@ const UserHeader = () => {
         {/* //desktop */}
 
         {/* //serchbar */}
-        <ProductSearch/>
+        <ProductSearch />
 
         <div className="items-center justify-between hidden w-full md:flex md:w-auto md:order-1 ">
           <ul className="flex flex-col font-medium p-4 md:p-0 mt-4 border border-gray-100 rounded-lg bg-gray-50 md:flex-row md:space-x-8 md:mt-0 md:border-0 md:bg-white dark:bg-gray-800  dark:border-gray-700">
@@ -153,25 +158,42 @@ const UserHeader = () => {
                 <AiTwotoneHome size={20} />
               </Link>
             </li>
-            {/* <li>
-              <Link
-                to="/catogery"
-                className="flex flex-row items-center gap-2 py-2 pl-3 pr-4 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 dark:text-black md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700"
-              >
-                Catogery
-              </Link>
-            </li> */}
             <li>
+              <div className="relative inline-block text-left">
+                <button
+                  type="button"
+                  // data-bs-toggle="dropdown"
+                  className="flex flex-row items-center gap-2 py-2 pl-3 pr-4 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 dark:text-black md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700"
+                  onClick={()=>setCategoryIsopen(!IsCategoryopen)}
+                >
+                  Categories <AiOutlineCaretDown size={20} />
+                </button>
+               {
+                 IsCategoryopen? (<ul className="absolute  left-0 mt-2 bg-white border border-gray-200 rounded-md shadow-lg">
+                 {categories?.map((category) => (                    
+                   <li key={category._id}>
+                     <Link
+                       to={`/category/${category.slug}`}
+                       className="block px-4 py-2 text-gray-800 hover:bg-gray-100"
+                       onClick={()=>setCategoryIsopen(false)}
+                     >
+                       {category.name}
+                     </Link>
+                   </li>
+                 ))}
+               </ul>):""
+               }
+              </div>
+            </li>
+            <li className="relative">
               <Link
                 to="/cart"
                 className="flex flex-row items-center gap-2 py-2 pl-3 pr-4 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent   md:hover:text-blue-700 md:p-0 dark:text-black md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700"
               >
                 Cart
-                <BsFillCartPlusFill size={20} />
-                {/* <sup className="text-xl -ml-2 animate-bounce duration-100 ease-in-out text-blue-600">
-                  0
-                </sup> */}
+                <BsFillCartPlusFill size={20}/>
               </Link>
+              <span className="absolute -top-3 -right-2 animate-bounce duration-200 text-teal-600">{CartItems.length}</span>
             </li>
             <li>
               <Link

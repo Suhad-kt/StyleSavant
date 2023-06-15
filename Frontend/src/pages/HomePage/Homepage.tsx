@@ -4,6 +4,12 @@ import { useEffect, useState } from "react";
 import { MdFavorite } from "react-icons/md";
 import { Prices } from "../../components/PricesFilter/PricesFiler";
 import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { addToCart } from "../../Redux/Feautures/CartSlice";
+import UserHeader from "../../components/UserHeader/UserHeader";
+import AOS from 'aos';
+import 'aos/dist/aos.css'; // You can also use <link> for styles
+AOS.init();
 interface Product {
   _id: string;
   name: string;
@@ -20,6 +26,7 @@ interface Category {
 }
 const Homepage = () => {
   const navigate =useNavigate()    //navigate
+  const dispatch = useDispatch()  //dispatch
 
   const [categories, setCategories] = useState<Category[]>([]);
   const [Products, setProducts] = useState<Product[]>([]);
@@ -109,6 +116,7 @@ const Homepage = () => {
   };
 
 
+
   //filter products
   const filterProducts = async () => {
     try {
@@ -130,8 +138,10 @@ const Homepage = () => {
   }, [checked, radio]);
 
   return (
-    <div className="mt-32 bg-gray-100 min-h-screen">
-      <div className="max-w-7xl  flex mx-auto">
+    <div  className="mt-32 bg-gray-100 min-h-screen">
+      <UserHeader/>
+      <div data-aos="fade-up"
+     data-aos-duration="3000" className="max-w-7xl  flex mx-auto">
         <div className=" w-1/3 p-4">
           <h1 className="text-lg font-bold racking-wide">Filter By category</h1>
           <div className="flex flex-col mt-4">
@@ -165,7 +175,7 @@ const Homepage = () => {
           </div>
         </div>
         {/* //product getting */}
-        <div className="p-4">
+        <div className="p-4" data-aos="zoom-in">
           <h1 className="text-2xl text-center font-extrabold">All products</h1>
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 mt-6">
             {Products.map((product) => (
@@ -212,7 +222,10 @@ const Homepage = () => {
                     </svg>
                     Details
                   </button>
-                  <button className="bg-blue-700 hover:bg-blue-800 text-white px-3 py-2 uppercase font-poppins font-medium rounded">
+                  <button className="bg-blue-700 hover:bg-blue-800 text-white px-3 py-2 uppercase font-poppins font-medium rounded"
+                  onClick={()=>dispatch(addToCart(product))}
+                  
+                  >
                     Add to Cart
                   </button>
                 </div>

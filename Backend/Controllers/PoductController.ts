@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import slugify from "slugify";
 import ProductModel from "../model/ProductModel";
+import CategoryModel from "../model/CategoryModel";
 import { cloud } from "../config/cloudinary";
 
 //creating product
@@ -248,7 +249,7 @@ export const SearchProductController = async (req:Request,res:Response) =>{
   }
 }
 
-
+//similar products getting
 export const similarProductsController = async (req:Request,res:Response) =>{
   try {
     const {pid,cid} = req.params
@@ -261,3 +262,17 @@ export const similarProductsController = async (req:Request,res:Response) =>{
     res.status(500).send({success:false,message:'something went wrong in getting similar products',error})
   }
 }
+
+
+//catagory wise products
+export const productCategoryController = async (req:Request,res:Response) =>{
+  try {
+    const {slug} = req.params
+    const category = await CategoryModel.findOne({slug})
+    const products = await ProductModel.find({category}).populate('category')
+    res.status(200).send({success:true,category,products})
+  } catch (error) {
+    res.status(500).send({success:false,message:'something went wrong in getting similar products',error})
+  }
+}
+

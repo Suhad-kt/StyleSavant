@@ -16,7 +16,7 @@ interface Product {
 }
 const ProductDeatailes = () => {
   const params = useParams();
-  const [product, setProduct] = useState<Product | undefined>();
+  const [product, setProduct] = useState<Product | null>();
   const [relatedProducts, setrelatedProducts] = useState<Product[]>([]);
 
   useEffect(() => {

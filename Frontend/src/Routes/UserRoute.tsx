@@ -18,13 +18,17 @@ import UpdateProduct from "../pages/admin/UpdateProducts.tsx";
 import Homepage from "../pages/HomePage/Homepage.tsx";
 import SearchPage from "../pages/SearchPage/SearchPage.tsx";
 import ProductDeatailes from "../pages/ProductDetails/ProductDeatailes.tsx";
+import CategoryProduct from "../pages/Categories/CategoryProduct.tsx";
+import CartPage from "../pages/Cartpage/CartPage.tsx";
 
 const UserRoute = () => {
   return (
     <Routes>
       <Route path="/" element={<Homepage/>} />
       <Route path="/search" element={<SearchPage/>} />
+      <Route path="/category/:slug" element={<CategoryProduct/>} />
       <Route path="/products-details/:slug" element={<ProductDeatailes/>} />
+      <Route path="/cart" element={<CartPage/>} />
       <Route path="/dashboard" element={<PrivateUserRoute />}>
         <Route path="user" element={<UserDashboard/>} />
         <Route path="user/profile" element={<Profile />} />

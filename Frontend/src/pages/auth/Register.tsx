@@ -41,7 +41,9 @@ function Registration() {
   };
 
   return (
-    <div className="flex flex-col items-center min-h-screen pt-6 sm:justify-center sm:pt-0 bg-gray-100">
+    <div data-aos="fade-down"
+    data-aos-offset="300"
+    data-aos-easing="ease-in-sine" className="flex flex-col items-center min-h-screen pt-6 sm:justify-center sm:pt-0 bg-gray-100">
       {/* styleSavant logo */}
       <div>
         <Link to="/" className="flex items-center">

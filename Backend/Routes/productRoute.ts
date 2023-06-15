@@ -1,6 +1,6 @@
 import express from 'express'
 import { ValidateToken, isadmin } from '../middlewares/authMiddleware'
-import { DeleteProductController, PoductCountController, PoductListController, SearchProductController, UpdateProductController, createProductController, getProductController, getSingleProductController, productFilterController, similarProductsController } from '../Controllers/PoductController'
+import { DeleteProductController, PoductCountController, PoductListController, SearchProductController, UpdateProductController, createProductController, getProductController, getSingleProductController, productCategoryController, productFilterController, similarProductsController } from '../Controllers/PoductController'
 import upload from '../middlewares/multer'
 
 const router = express.Router()
@@ -37,5 +37,8 @@ router.get('/search-products/:keyword',SearchProductController)
 
 //similar products
 router.get('/similar-products/:pid/:cid',similarProductsController)
+
+//category wise products
+router.get('/category-products/:slug',productCategoryController)
 
 export default router
